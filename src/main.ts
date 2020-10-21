@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Log } from './util/logger/logger.service';
-import APPCONFIG from './app.config';
+import { APPCONFIG } from './config/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -23,7 +23,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
 
-  Log.log(`Listening on port ${APPCONFIG.PORT}`);
-  await app.listen(APPCONFIG.PORT);
+  Log.log(`Listening on port ${APPCONFIG.port}`);
+  await app.listen(APPCONFIG.port);
 }
 bootstrap();
