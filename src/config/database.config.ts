@@ -1,5 +1,6 @@
 /**
- * 
+ *  Database configuration.
+ *  TODO
  */
 export default () => ({
     type: 'mongodb',
