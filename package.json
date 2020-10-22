@@ -31,6 +31,7 @@
     "dynamoose": "^2.3.0",
     "moment": "^2.29.1",
     "nestjs-dynamoose": "^0.2.9",
+    "nestjs-redoc": "^1.3.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.5",
