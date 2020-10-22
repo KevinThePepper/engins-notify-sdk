@@ -1,9 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 import { Log } from './util/logger/logger.service';
 import { APPCONFIG } from './config/app.config';
+import { SWAGGER_OPTIONS_V1, REDOC_OPTIONS_V1 } from './config/redoc.config';
+import { RedocModule } from 'nestjs-redoc';
 
+/**
+ * NestJS bootstrap function used to initialize, configure, and run the service.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new Log()
@@ -12,18 +17,11 @@ async function bootstrap() {
   // custom logger
   app.useLogger(new Log());
 
-  // swagger
-  const options = new DocumentBuilder()
-    .setTitle('ENGINS Notification SDK')
-    .setDescription('API-driven templated notifications across the ENGINS platform')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
+  // swagger version 1
+  const documentV1 = SwaggerModule.createDocument(app, SWAGGER_OPTIONS_V1);
+  await RedocModule.setup('/api/v1/docs', app, documentV1, REDOC_OPTIONS_V1);
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
-
-  Log.log(`Listening on port ${APPCONFIG.port}`);
+  Log.log(`Listening on port ${APPCONFIG.port}`, 'AppModule');
   await app.listen(APPCONFIG.port);
 }
 bootstrap();
