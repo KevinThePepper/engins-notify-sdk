@@ -12,10 +12,13 @@ describe('AppController', () => {
     }).compile();
   });
 
-  describe('getHello', () => {
-    it('should return "Hello World!"', () => {
+  /**
+   * Tests the /api/v1/test endpoint.
+   */
+  describe('Test', () => {
+    it('should return "test"', () => {
       const appController = app.get<AppController>(AppController);
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.getTest()).toBe('test');
     });
   });
 });
