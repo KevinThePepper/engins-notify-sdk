@@ -13,8 +13,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
   imports: [
     LoggerModule,
     ConfigModule.forRoot({
-      ignoreEnvFile: process.env.HABITAT !== 'local',
-      envFilePath: process.env.HABITAT === 'local' ? '.env.local' : null,
+      envFilePath: '.env.local',
       isGlobal: true,
       load: [appConfig]
     })

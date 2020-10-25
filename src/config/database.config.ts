@@ -1,6 +1,6 @@
 /**
  *  Database configuration.
- *  TODO
+ *  TODO use nestjs-dynamoose to configure a DynamoDB backend
  */
 export default () => ({
     type: 'mongodb',

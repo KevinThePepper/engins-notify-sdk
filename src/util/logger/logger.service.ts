@@ -9,11 +9,20 @@ import { Injectable, Logger, Scope } from '@nestjs/common';
 @Injectable({ scope: Scope.TRANSIENT })
 export class Log extends Logger {
   /**
-   * Wrapper for the standard `Logger.log` message.
+   * Wrapper for the standard `Logger.log` static message.
    * @param message the debug message.
    * @param context additional debug message context.
    */
   info(message: string, context = ''): void {
+    super.log(message, context);
+  }
+
+  /**
+   * Wrapper for the standard `Logger.log` static message.
+   * @param message the debug message.
+   * @param context additional debug message context.
+   */
+  static info(message: string, context = ''): void {
     super.log(message, context);
   }
 
