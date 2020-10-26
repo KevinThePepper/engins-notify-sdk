@@ -2,27 +2,36 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { Log } from './util/logger/logger.service';
-import { SWAGGER_OPTIONS_V1, REDOC_OPTIONS_V1 } from './config/redoc.config';
+import { SWAGGER_OPTIONS, REDOC_OPTIONS } from './config/redoc.config';
 import { RedocModule } from 'nestjs-redoc';
+import { HttpExceptionFilter } from './exceptions/filters/http-exception.filter';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 /**
  * NestJS bootstrap function used to initialize, configure, and run the service.
  */
 async function bootstrap() {
+  const logger = new Log();
   const app = await NestFactory.create(AppModule, {
-    logger: new Log()
+    logger: logger
   });
   
   // custom logger
-  app.useLogger(new Log());
+  app.useLogger(logger);
 
   // use the config service to configure our environment
   const config = app.get('ConfigService').internalConfig;
   Log.debug(config);
 
-  // swagger version 1
-  const documentV1 = SwaggerModule.createDocument(app, SWAGGER_OPTIONS_V1);
-  await RedocModule.setup('/api/v1/docs', app, documentV1, REDOC_OPTIONS_V1);
+  // swagger
+  const document = SwaggerModule.createDocument(app, SWAGGER_OPTIONS);
+  await RedocModule.setup('/api/docs', app, document, REDOC_OPTIONS);
+
+  // add custom filters
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // custom interceptors
+  app.useGlobalInterceptors(new LoggingInterceptor(logger));
 
   const port = config.port;
   Log.log(`Listening on port ${port}`, 'AppModule');
