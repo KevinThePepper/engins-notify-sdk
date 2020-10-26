@@ -4,7 +4,6 @@ import appConfig from './config/app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './util/logger/logger.module';
-import { LoggerMiddleware } from './middleware/logger.middleware';
 
 /**
  * Base app module used to import remaining modules, controllers and services.
@@ -21,13 +20,4 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  /**
-   * Configures middleware for the app.
-   * @param consumer Interface defining method for applying user defined middleware to routes.
-   */
-  configure(consumer: MiddlewareConsumer): void {
-    // add logger middleware to log all requests
-    consumer.apply(LoggerMiddleware).forRoutes({path: '*', method: RequestMethod.ALL});
-  }
-}
+export class AppModule {}
